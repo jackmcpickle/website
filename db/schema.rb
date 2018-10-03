@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_01_152012) do
+ActiveRecord::Schema.define(version: 2018_10_03_205938) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -278,25 +278,15 @@ ActiveRecord::Schema.define(version: 2018_10_01_152012) do
     t.boolean "is_legacy", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "mentoring_enabled"
     t.boolean "track_in_independent_mode", default: false, null: false
-    t.datetime "mentor_claimed_until", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "mentoring_requested_at"
     t.index ["approved_by_id"], name: "fk_rails_4cc89d0b11"
     t.index ["approved_by_id"], name: "ihid-5"
     t.index ["completed_at"], name: "ihid-6"
     t.index ["exercise_id", "user_id"], name: "index_solutions_on_exercise_id_and_user_id", unique: true
-    t.index ["last_updated_by_user_at", "num_mentors", "created_at", "exercise_id"], name: "fixa-4"
-    t.index ["last_updated_by_user_at", "num_mentors", "exercise_id"], name: "fixa-5"
-    t.index ["last_updated_by_user_at", "num_mentors", "exercise_id"], name: "fixa-8"
     t.index ["last_updated_by_user_at"], name: "ihid-3"
-    t.index ["num_mentors", "created_at", "exercise_id", "last_updated_by_user_at"], name: "fixa-6"
-    t.index ["num_mentors", "created_at", "exercise_id"], name: "mentor_selection_idx_1"
     t.index ["num_mentors", "exercise_id", "user_id"], name: "fix-4"
     t.index ["num_mentors", "exercise_id"], name: "fix-2"
-    t.index ["num_mentors", "exercise_id"], name: "fixa-2"
-    t.index ["num_mentors", "id", "exercise_id"], name: "fixa-7"
-    t.index ["num_mentors", "last_updated_by_user_at", "exercise_id"], name: "fixa-1"
     t.index ["num_mentors", "last_updated_by_user_at"], name: "ihid-4"
     t.index ["num_mentors", "track_in_independent_mode", "created_at", "exercise_id"], name: "mentor_selection_idx_2"
     t.index ["num_mentors", "user_id", "exercise_id"], name: "fix-5"
@@ -455,6 +445,11 @@ ActiveRecord::Schema.define(version: 2018_10_01_152012) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "auth_tokens", "users", name: "auth_tokens_ibfk_1"
+  add_foreign_key "communication_preferences", "users", name: "communication_preferences_ibfk_1"
+  add_foreign_key "discussion_posts", "iterations", name: "discussion_posts_ibfk_1"
+  add_foreign_key "exercise_topics", "exercises", name: "exercise_topics_ibfk_1"
+  add_foreign_key "exercise_topics", "topics", name: "exercise_topics_ibfk_2"
   add_foreign_key "exercises", "exercises", column: "unlocked_by_id"
   add_foreign_key "exercises", "tracks"
   add_foreign_key "ignored_solution_mentorships", "solutions"
